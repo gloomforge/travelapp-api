@@ -1,0 +1,56 @@
+# .NET Core
+bin/
+obj/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer files
+*.vsscc
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# ASP.NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Local History for VS Code
+.vscode/
+
+# User-specific files
+.idea/
+
+# macOS
+.DS_Store
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# VS for Mac config folder
+.vscode/
+.idea/
+.vs/
+
+# JetBrains Rider
+.idea/
+
+# Linux
+*~
