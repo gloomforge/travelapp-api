@@ -18,6 +18,9 @@ builder.Services.AddDbContext<UserDbContext>(options =>
 builder.Services.AddDbContext<TripDbContext>(options =>
     options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
 
+builder.Services.AddDbContext<RouteDbContext>(options =>
+    options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
+
 builder.Services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
 var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()
@@ -54,6 +57,9 @@ builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
 builder.Services.AddScoped<ITripRepository, TripRepository>();
 builder.Services.AddScoped<ITripService, TripService>();
 
+builder.Services.AddScoped<IRouteRepository, RouteRepository>();
+builder.Services.AddScoped<IRouteService, RouteService>();
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -70,5 +76,4 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();
