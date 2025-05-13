@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\TravelJournal.Application\TravelJournal.Application.csproj" />
     <ProjectReference Include="..\TravelJournal.Domain\TravelJournal.Domain.csproj" />
+    <ProjectReference Include="..\TravelJournal.Infrastructure\TravelJournal.Infrastructure.csproj" />
     <ProjectReference Include="..\TravelJournal.Shared\TravelJournal.Shared.csproj" />
   </ItemGroup>
 
