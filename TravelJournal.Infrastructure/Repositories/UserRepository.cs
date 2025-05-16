@@ -6,7 +6,8 @@ using TravelJournal.Infrastructure.Data;
 
 namespace TravelJournal.Infrastructure.Repositories;
 
-public class UserRepository(UserDbContext context) : IUserRepository
+// public class UserRepository(UserDbContext context) : IUserRepository
+public class UserRepository(ApplicationDbContext context) : IUserRepository
 {
     public async Task AddUser(User user)
     {

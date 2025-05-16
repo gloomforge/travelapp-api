@@ -5,7 +5,8 @@ using TravelJournal.Infrastructure.Data;
 
 namespace TravelJournal.Infrastructure.Repositories;
 
-public class TripRepository(TripDbContext context) : ITripRepository
+// public class TripRepository(TripDbContext context) : ITripRepository
+public class TripRepository(ApplicationDbContext context) : ITripRepository
 {
     public async Task AddTrip(Trip trip)
     {

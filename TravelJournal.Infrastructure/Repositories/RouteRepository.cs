@@ -5,7 +5,8 @@ using TravelJournal.Infrastructure.Data;
 
 namespace TravelJournal.Infrastructure.Repositories;
 
-public class RouteRepository(RouteDbContext context) : IRouteRepository
+// public class RouteRepository(RouteDbContext context) : IRouteRepository
+public class RouteRepository(ApplicationDbContext context) : IRouteRepository
 {
     public async Task AddRoute(Route route)
     {
