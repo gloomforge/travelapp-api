@@ -4,6 +4,10 @@ using TravelJournal.Domain.ValueObjects;
 
 namespace TravelJournal.Infrastructure.Data;
 
+//
+// obsolete class (not currently used)
+//
+
 public class UserDbContext(DbContextOptions<UserDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }

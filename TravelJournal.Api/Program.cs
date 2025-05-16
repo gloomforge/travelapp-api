@@ -12,14 +12,20 @@ using TravelJournal.Infrastructure.Security;
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
-builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySQL(configuration.GetConnectionString("DefaultConnection") // for test run use context "TestConnection"
+                     ?? throw new InvalidOperationException("No valid connection string found!")));
 
-builder.Services.AddDbContext<TripDbContext>(options =>
-    options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
+// TODO! need to improve readability of ApplicationDbContext
 
-builder.Services.AddDbContext<RouteDbContext>(options =>
-    options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
+// builder.Services.AddDbContext<UserDbContext>(options =>
+//     options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
+//
+// builder.Services.AddDbContext<TripDbContext>(options =>
+//     options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
+//
+// builder.Services.AddDbContext<RouteDbContext>(options =>
+//     options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
 
 builder.Services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 

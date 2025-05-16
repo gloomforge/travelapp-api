@@ -3,6 +3,10 @@ using TravelJournal.Domain.Models;
 
 namespace TravelJournal.Infrastructure.Data;
 
+//
+// obsolete class (not currently used)
+//
+
 public class TripDbContext(DbContextOptions<TripDbContext> options) : DbContext(options)
 {
     public DbSet<Trip> Trips { get; set; }
