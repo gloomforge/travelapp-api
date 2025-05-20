@@ -9,6 +9,8 @@ public class User
     public Email Email { get; set; }
     public string Password { get; set; }
     public DateTime CreatedAt { get; set; }
+    
+    public ICollection<Trip> Trips { get; set; } = new List<Trip>();
 
     private User()
     {
