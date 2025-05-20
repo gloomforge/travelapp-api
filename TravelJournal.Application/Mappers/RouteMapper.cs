@@ -4,7 +4,7 @@ using TravelJournal.Domain.Models;
 
 namespace TravelJournal.Application.Mappers;
 
-public class RouteMapper
+public static class RouteMapper
 {
     public static Route ToModel(CreateRouteRequest request)
     {

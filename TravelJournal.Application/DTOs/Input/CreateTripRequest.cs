@@ -4,5 +4,6 @@ public record CreateTripRequest(
     string Title,
     string Description,
     DateTime StartDate,
-    DateTime EndDate
+    DateTime EndDate,
+    int UserId
 );

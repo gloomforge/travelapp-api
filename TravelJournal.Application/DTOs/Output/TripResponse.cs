@@ -10,5 +10,6 @@ public record TripResponse(
     DateTime StartDate,
     DateTime EndDate,
     DateTime CreatedAt,
-    DateTime UpdatedAt
+    DateTime UpdatedAt,
+    UserResponse? User = null
 );
