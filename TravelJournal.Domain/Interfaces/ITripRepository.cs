@@ -5,6 +5,7 @@ namespace TravelJournal.Domain.Interfaces;
 public interface ITripRepository
 {
     Task<Trip?> FindById(int id);
+    Task<List<Trip>> GetAllTrips();
     Task<List<Trip>> FindTripsByTitle(string title);
     Task AddTrip(Trip trip);
     Task UpdateTrip(Trip trip);

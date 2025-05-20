@@ -6,10 +6,10 @@ namespace TravelJournal.Application.Interfaces;
 public interface ITripService
 {
     // TODO: Basic methods for working with travel
-    Task<TripResponse> CreateTaskAsync(CreateTripRequest request);
-    Task<TripResponse> UpdateTaskAsync(int id, UpdateTripRequest request);
-    Task<bool> DeleteTaskAsync(int id);
-    Task<List<TripResponse>> FindAllTasksAsync();
-    Task<TripResponse> FindTaskByIdAsync(int id);
-    Task<List<TripResponse>> FindTasksByTitleAsync(string title);
+    Task<TripResponse> CreateTripAsync(CreateTripRequest request);
+    Task<TripResponse> UpdateTripAsync(int id, UpdateTripRequest request);
+    Task<bool> DeleteTripAsync(int id);
+    Task<List<TripResponse>> FindAllTripsAsync();
+    Task<TripResponse> FindTripByIdAsync(int id);
+    Task<List<TripResponse>> FindTripsByTitleAsync(string title);
 }

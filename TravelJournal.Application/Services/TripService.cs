@@ -11,7 +11,7 @@ public class TripService(
     ITripRepository repo
 ) : ITripService
 {
-    public async Task<TripResponse> CreateTaskAsync(CreateTripRequest request)
+    public async Task<TripResponse> CreateTripAsync(CreateTripRequest request)
     {
         var trip = TripMapper.ToModel(request);
 
@@ -19,7 +19,7 @@ public class TripService(
         return TripMapper.ToResponse(trip);
     }
 
-    public async Task<TripResponse> UpdateTaskAsync(int id, UpdateTripRequest request)
+    public async Task<TripResponse> UpdateTripAsync(int id, UpdateTripRequest request)
     {
         var existing = await repo.FindById(id);
         if (existing == null)
@@ -41,7 +41,7 @@ public class TripService(
         return TripMapper.ToResponse(existing);
     }
 
-    public async Task<bool> DeleteTaskAsync(int id)
+    public async Task<bool> DeleteTripAsync(int id)
     {
         var existing = await repo.FindById(id);
         if (existing == null)
@@ -51,13 +51,13 @@ public class TripService(
         return true;
     }
 
-    public async Task<List<TripResponse>> FindAllTasksAsync()
+    public async Task<List<TripResponse>> FindAllTripsAsync()
     {
         var trips = await repo.FindTripsByTitle(string.Empty);
         return trips.Select(TripMapper.ToResponse).ToList();
     }
 
-    public async Task<TripResponse> FindTaskByIdAsync(int id)
+    public async Task<TripResponse> FindTripByIdAsync(int id)
     {
         var trip = await repo.FindById(id);
         if (trip == null)
@@ -65,7 +65,7 @@ public class TripService(
         return TripMapper.ToResponse(trip);
     }
 
-    public async Task<List<TripResponse>> FindTasksByTitleAsync(string title)
+    public async Task<List<TripResponse>> FindTripsByTitleAsync(string title)
     {
         var trips = await repo.FindTripsByTitle(title);
         return trips.Select(TripMapper.ToResponse).ToList();
