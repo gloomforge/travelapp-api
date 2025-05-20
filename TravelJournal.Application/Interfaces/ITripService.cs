@@ -12,4 +12,5 @@ public interface ITripService
     Task<List<TripResponse>> FindAllTripsAsync();
     Task<TripResponse> FindTripByIdAsync(int id);
     Task<List<TripResponse>> FindTripsByTitleAsync(string title);
+    Task<List<TripResponse>> FindTripsByUserIdAsync(int userId);
 }

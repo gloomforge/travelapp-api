@@ -11,5 +11,6 @@ public record TripResponse(
     DateTime EndDate,
     DateTime CreatedAt,
     DateTime UpdatedAt,
-    List<RouteResponse> Routes
+    List<RouteResponse> Routes,
+    UserResponse? User = null
 );

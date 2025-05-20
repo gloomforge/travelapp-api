@@ -35,6 +35,9 @@ public class TripRepository(ApplicationDbContext context) : ITripRepository
             .Where(t => EF.Functions.Like(t.Title, $"%{title}%"))
             .ToListAsync();
 
+    public Task<List<Trip>> FindTripsByUserId(int userId) =>
+        context.Trips.Where(t => t.UserId == userId).ToListAsync();
+
     public Task<Trip?> FindById(int id) =>
         context.Trips
             .Include(t => t.Routes)

@@ -12,16 +12,20 @@ public class Trip
     public TripStatus Status { get; set; }
     public DateTime CreatedAt { get; init; }
     public DateTime UpdatedAt { get; set; }
+    
+    public int UserId { get; set; }
+    public User User { get; set; }
 
     public List<Route> Routes { get; private set; } = [];
     // public User User { get; set; } = null!;
 
-    public Trip(string title, string description, DateTime startDate, DateTime endDate)
+    public Trip(string title, string description, DateTime startDate, DateTime endDate, int userId)
     {
         Title = title;
         Description = description;
         StartDate = startDate;
         EndDate = endDate;
+        UserId = userId;
         Status = TripStatus.None;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;

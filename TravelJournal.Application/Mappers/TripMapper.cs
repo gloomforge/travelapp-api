@@ -4,7 +4,7 @@ using TravelJournal.Domain.Models;
 
 namespace TravelJournal.Application.Mappers;
 
-public class TripMapper
+public static class TripMapper
 {
     public static Trip ToModel(CreateTripRequest request)
     {
@@ -12,7 +12,8 @@ public class TripMapper
             request.Title,
             request.Description,
             request.StartDate,
-            request.EndDate
+            request.EndDate,
+            request.UserId
         );
     }
     
