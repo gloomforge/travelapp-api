@@ -12,8 +12,15 @@ public class TripController(ITripService service) : ControllerBase
     [HttpPost]
     public async Task<ActionResult<TripResponse>> Create([FromBody] CreateTripRequest request)
     {
-        var created = await service.CreateTaskAsync(request);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        try 
+        {
+            var created = await service.CreateTaskAsync(request);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
 
     [HttpGet]
@@ -29,6 +36,20 @@ public class TripController(ITripService service) : ControllerBase
         var list = await service.FindTasksByTitleAsync(title);
         return Ok(list);
     }
+    
+    [HttpGet("user/{userId:int}")]
+    public async Task<ActionResult<List<TripResponse>>> GetByUserId([FromRoute] int userId)
+    {
+        try
+        {
+            var trips = await service.FindTasksByUserIdAsync(userId);
+            return Ok(trips);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<TripResponse>> GetById([FromRoute] int id)
@@ -38,9 +59,9 @@ public class TripController(ITripService service) : ControllerBase
             var trip = await service.FindTaskByIdAsync(id);
             return Ok(trip);
         }
-        catch (KeyNotFoundException)
+        catch (KeyNotFoundException ex)
         {
-            return NotFound();
+            return NotFound(ex.Message);
         }
     }
 
@@ -54,9 +75,9 @@ public class TripController(ITripService service) : ControllerBase
             var updated = await service.UpdateTaskAsync(id, request);
             return Ok(updated);
         }
-        catch (KeyNotFoundException)
+        catch (KeyNotFoundException ex)
         {
-            return NotFound();
+            return NotFound(ex.Message);
         }
     }
     
