@@ -26,7 +26,8 @@ public class TripMapper
             trip.StartDate,
             trip.EndDate,
             trip.CreatedAt,
-            trip.UpdatedAt
+            trip.UpdatedAt,
+            trip.Routes.Select(RouteMapper.ToResponse).ToList()
         );
     }
 }
