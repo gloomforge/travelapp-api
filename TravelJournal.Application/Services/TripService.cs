@@ -8,11 +8,16 @@ using TravelJournal.Domain.ValueObjects;
 namespace TravelJournal.Application.Services;
 
 public class TripService(
-    ITripRepository repo
+    ITripRepository repo,
+    IUserRepository userRepo
 ) : ITripService
 {
     public async Task<TripResponse> CreateTaskAsync(CreateTripRequest request)
     {
+        var userExists = await userRepo.ExistsById(request.UserId);
+        if (!userExists)
+            throw new KeyNotFoundException($"User with id {request.UserId} not found");
+            
         var trip = TripMapper.ToModel(request);
 
         await repo.AddTrip(trip);
@@ -62,12 +67,38 @@ public class TripService(
         var trip = await repo.FindById(id);
         if (trip == null)
             throw new KeyNotFoundException($"Trip with id {id} not found");
-        return TripMapper.ToResponse(trip);
+            
+        var tripResponse = TripMapper.ToResponse(trip);
+        
+        var user = await userRepo.FindUserById(trip.UserId);
+        if (user != null)
+        {
+            tripResponse = tripResponse with { User = UserMapper.ToResponse(user) };
+        }
+        
+        return tripResponse;
     }
 
     public async Task<List<TripResponse>> FindTasksByTitleAsync(string title)
     {
         var trips = await repo.FindTripsByTitle(title);
         return trips.Select(TripMapper.ToResponse).ToList();
+    }
+    
+    public async Task<List<TripResponse>> FindTasksByUserIdAsync(int userId)
+    {
+        var userExists = await userRepo.ExistsById(userId);
+        if (!userExists)
+            throw new KeyNotFoundException($"User with id {userId} not found");
+            
+        var trips = await repo.FindTripsByUserId(userId);
+        var responses = trips.Select(TripMapper.ToResponse).ToList();
+        
+        var user = await userRepo.FindUserById(userId);
+        if (user == null) return responses;
+        var userResponse = UserMapper.ToResponse(user);
+        responses = responses.Select(r => r with { User = userResponse }).ToList();
+
+        return responses;
     }
 }
