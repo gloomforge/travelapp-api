@@ -29,6 +29,9 @@ public class TripRepository(ApplicationDbContext context) : ITripRepository
     public Task<List<Trip>> FindTripsByTitle(string title) =>
         context.Trips.Where(t => t.Title == title).ToListAsync();
 
+    public Task<List<Trip>> FindTripsByUserId(int userId) =>
+        context.Trips.Where(t => t.UserId == userId).ToListAsync();
+
     public Task<Trip?> FindById(int id) =>
         context.Trips.SingleOrDefaultAsync(t => t.Id == id);
 

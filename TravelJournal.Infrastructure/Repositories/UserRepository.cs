@@ -21,9 +21,15 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
     public Task<bool> ExistsByEmail(Email email) => 
         context.Users.AnyAsync(u => u.Email == email);
 
+    public Task<bool> ExistsById(int id) => 
+        context.Users.AnyAsync(u => u.Id == id);
+
     public Task<User?> FindUserByEmail(Email email) =>
         context.Users.SingleOrDefaultAsync(u => u.Email == email);
     
     public Task<User?> FindUserByName(string username) =>
         context.Users.SingleOrDefaultAsync(u => u.Name == username);
+
+    public Task<User?> FindUserById(int id) =>
+        context.Users.SingleOrDefaultAsync(u => u.Id == id);
 }

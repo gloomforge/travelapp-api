@@ -29,6 +29,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> context
 
             entity.Property(u => u.CreatedAt)
                 .HasColumnName("created_at");
+                
+            entity.HasMany(u => u.Trips)
+                .WithOne(t => t.User)
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
         
         // TODO: === Trips ===
@@ -50,6 +55,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> context
 
             entity.Property(t => t.UpdatedAt)
                 .HasColumnName("update_at");
+                
+            entity.Property(t => t.UserId)
+                .HasColumnName("user_id");
 
             entity.OwnsOne(t => t.Status, status =>
             {
@@ -57,6 +65,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> context
                     .HasColumnName("status")
                     .HasMaxLength(50);
             });
+            
+            // Configure many-to-one relationship with User
+            entity.HasOne(t => t.User)
+                .WithMany(u => u.Trips)
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
         
         // TODO: === Routes ===
