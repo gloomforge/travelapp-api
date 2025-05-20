@@ -10,63 +10,36 @@ namespace TravelJournal.Api.Controllers;
 public class RouteController(IRouteService service) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<RouteResponse>> Create([FromBody] CreateRouteRequest request) => 
-        await service.CreateRouteAsync(request);
-    
-    
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<RouteResponse>> Update(int id, [FromBody] UpdateRouteRequest request)
-    {
-        try
-        {
-            var result = await service.UpdateRouteAsync(id, request);
-            return Ok(result);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
-    }
-    
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete(int id)
-    {
-        var success = await service.DeleteRouteAsync(id);
-        return success ? NoContent() : NotFound();
-    }
+    public async Task<ActionResult<RouteResponse>> Create([FromBody] CreateRouteRequest dto)
+        => Ok(await service.CreateRouteAsync(dto));
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<RouteResponse>> GetById(int id)
     {
-        try
-        {
-            var result = await service.FindRouteByIdAsync(id);
-            return Ok(result);
-        }
-        catch (KeyNotFoundException ex)
-        {
-            return NotFound(ex.Message);
-        }
+        try { return Ok(await service.FindRouteByIdAsync(id)); }
+        catch (KeyNotFoundException) { return NotFound(); }
     }
-    
+
     [HttpGet("location/{location}")]
-    public async Task<ActionResult<List<RouteResponse>>> GetByLocation(string location)
-    {
-        var result = await service.FindRoutesByLocationAsync(location);
-        return Ok(result);
-    }
+    public async Task<ActionResult<List<RouteResponse>>> ByLocation(string location)
+        => Ok(await service.FindRoutesByLocationAsync(location));
 
     [HttpGet("country/{country}")]
-    public async Task<ActionResult<List<RouteResponse>>> GetByCountry(string country)
-    {
-        var result = await service.FindRoutesByCountryAsync(country);
-        return Ok(result);
-    }
+    public async Task<ActionResult<List<RouteResponse>>> ByCountry(string country)
+        => Ok(await service.FindRoutesByCountryAsync(country));
 
     [HttpGet("city/{city}")]
-    public async Task<ActionResult<List<RouteResponse>>> GetByCity(string city)
+    public async Task<ActionResult<List<RouteResponse>>> ByCity(string city)
+        => Ok(await service.FindRoutesByCityAsync(city));
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<RouteResponse>> Update(int id, [FromBody] UpdateRouteRequest dto)
     {
-        var result = await service.FindRoutesByCityAsync(city);
-        return Ok(result);
+        try { return Ok(await service.UpdateRouteAsync(id, dto)); }
+        catch (KeyNotFoundException) { return NotFound(); }
     }
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+        => (await service.DeleteRouteAsync(id)) ? NoContent() : NotFound();
 }

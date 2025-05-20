@@ -10,63 +10,35 @@ namespace TravelJournal.Api.Controllers;
 public class TripController(ITripService service) : ControllerBase
 {
     [HttpPost]
-    public async Task<ActionResult<TripResponse>> Create([FromBody] CreateTripRequest request)
+    public async Task<ActionResult<TripResponse>> Create([FromBody] CreateTripRequest dto)
     {
-        var created = await service.CreateTaskAsync(request);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        var result = await service.CreateTripAsync(dto);
+        return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
     }
 
     [HttpGet]
     public async Task<ActionResult<List<TripResponse>>> GetAll()
-    {
-        var list = await service.FindAllTasksAsync();
-        return Ok(list);
-    }
+        => Ok(await service.FindAllTripsAsync());
 
     [HttpGet("search")]
     public async Task<ActionResult<List<TripResponse>>> Search([FromQuery] string title)
-    {
-        var list = await service.FindTasksByTitleAsync(title);
-        return Ok(list);
-    }
+        => Ok(await service.FindTripsByTitleAsync(title));
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<TripResponse>> GetById([FromRoute] int id)
+    public async Task<ActionResult<TripResponse>> GetById(int id)
     {
-        try
-        {
-            var trip = await service.FindTaskByIdAsync(id);
-            return Ok(trip);
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
+        try { return Ok(await service.FindTripByIdAsync(id)); }
+        catch (KeyNotFoundException) { return NotFound(); }
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult<TripResponse>> Update(
-        [FromRoute] int id, 
-        [FromBody] UpdateTripRequest request)
+    public async Task<ActionResult<TripResponse>> Update(int id, [FromBody] UpdateTripRequest dto)
     {
-        try
-        {
-            var updated = await service.UpdateTaskAsync(id, request);
-            return Ok(updated);
-        }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
+        try { return Ok(await service.UpdateTripAsync(id, dto)); }
+        catch (KeyNotFoundException) { return NotFound(); }
     }
-    
-    [HttpDelete("{id:int}")]
-    public async Task<IActionResult> Delete([FromRoute] int id)
-    {
-        var removed = await service.DeleteTaskAsync(id);
-        if (!removed)
-            return NotFound();
 
-        return NoContent();
-    }
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+        => (await service.DeleteTripAsync(id)) ? NoContent() : NotFound();
 }
