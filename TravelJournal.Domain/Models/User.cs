@@ -10,6 +10,9 @@ public class User
     public string Password { get; set; }
     public DateTime CreatedAt { get; set; }
 
+    // TODO: It is better to think over the scheme of the interaction models in the database
+    // public ICollection<Trip> Trips { get; set; } = [];
+
     private User()
     {
     }
