@@ -66,10 +66,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> context
                     .HasMaxLength(50);
             });
             
-            // Configure many-to-one relationship with User
             entity.HasOne(t => t.User)
                 .WithMany(u => u.Trips)
                 .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
+            entity.HasMany(t => t.Routes)
+                .WithOne(r => r.Trip)
+                .HasForeignKey(r => r.TripId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
         
@@ -78,17 +82,25 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> context
         {
             entity.ToTable("routes");
 
-            entity.Property(t => t.LocationName)
-                .HasColumnName("route_id");
+            entity.Property(r => r.Id)
+                .HasColumnName("id");
             
-            entity.Property(t => t.LocationName)
+            entity.Property(r => r.LocationName)
                 .HasColumnName("location_name");
 
-            entity.Property(t => t.Country)
+            entity.Property(r => r.Country)
                 .HasColumnName("country");
 
-            entity.Property(t => t.City)
+            entity.Property(r => r.City)
                 .HasColumnName("city");
+                
+            entity.Property(r => r.TripId)
+                .HasColumnName("trip_id");
+            
+            entity.HasOne(r => r.Trip)
+                .WithMany(t => t.Routes)
+                .HasForeignKey(r => r.TripId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
