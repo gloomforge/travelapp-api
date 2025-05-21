@@ -7,11 +7,16 @@ using TravelJournal.Domain.Interfaces;
 namespace TravelJournal.Application.Services;
 
 public class RouteService(
-    IRouteRepository repo
+    IRouteRepository repo,
+    ITripRepository tripRepo
 ) : IRouteService
 {
     public async Task<RouteResponse> CreateRouteAsync(CreateRouteRequest request)
     {
+        var tripExists = await tripRepo.ExistsById(request.TripId);
+        if (!tripExists)
+            throw new KeyNotFoundException($"Trip with id {request.TripId} not found");
+            
         var route = RouteMapper.ToModel(request);
 
         await repo.AddRoute(route);

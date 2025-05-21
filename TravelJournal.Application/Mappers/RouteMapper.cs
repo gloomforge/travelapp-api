@@ -8,11 +8,16 @@ public static class RouteMapper
 {
     public static Route ToModel(CreateRouteRequest request)
     {
-        return new Route(
+        var route = new Route(
             request.LocationName,
             request.Country,
             request.City
-        );
+        )
+        {
+            TripId = request.TripId
+        };
+
+        return route;
     }
 
     public static RouteResponse ToResponse(Route route)
