@@ -11,7 +11,17 @@ public class RouteController(IRouteService service) : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<RouteResponse>> Create([FromBody] CreateRouteRequest dto)
-        => Ok(await service.CreateRouteAsync(dto));
+    {
+        try 
+        {
+            var result = await service.CreateRouteAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(new { message = ex.Message, error = "Please create a trip first or use a valid trip ID" });
+        }
+    }
 
     [HttpGet("{id:int}")]
     public async Task<ActionResult<RouteResponse>> GetById(int id)
