@@ -26,11 +26,22 @@ public class TripRepository(ApplicationDbContext context) : ITripRepository
         await context.SaveChangesAsync();
     }
 
+    public Task<List<Trip>> GetAllTrips() =>
+        context.Trips.Include(t => t.Routes).ToListAsync();
+
     public Task<List<Trip>> FindTripsByTitle(string title) =>
-        context.Trips.Where(t => t.Title == title).ToListAsync();
+        context.Trips
+            .Include(t => t.Routes)
+            .Where(t => EF.Functions.Like(t.Title, $"%{title}%"))
+            .ToListAsync();
+
+    public Task<List<Trip>> FindTripsByUserId(int userId) =>
+        context.Trips.Where(t => t.UserId == userId).ToListAsync();
 
     public Task<Trip?> FindById(int id) =>
-        context.Trips.SingleOrDefaultAsync(t => t.Id == id);
+        context.Trips
+            .Include(t => t.Routes)
+            .SingleOrDefaultAsync(t => t.Id == id);
 
     public Task<bool> ExistsById(int id) =>
         context.Trips.AnyAsync(t => t.Id == id);

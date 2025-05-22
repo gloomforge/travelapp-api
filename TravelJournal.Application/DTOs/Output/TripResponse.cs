@@ -10,5 +10,9 @@ public record TripResponse(
     DateTime StartDate,
     DateTime EndDate,
     DateTime CreatedAt,
-    DateTime UpdatedAt
+    DateTime UpdatedAt,
+    List<RouteResponse> Routes,
+
+    // Why is he ???
+    UserResponse? User = null // you need to remove or think about where to be used
 );

@@ -33,6 +33,17 @@ var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>()
                   ?? throw new InvalidOperationException("JWT settings not configured");
 var keyBytes = Encoding.UTF8.GetBytes(jwtSettings.Key);
 
+// TODO: give access to requests from the site
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", 
+        policy => policy
+            .WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+});
+
 builder.Services
     .AddAuthentication(options =>
     {
@@ -56,6 +67,7 @@ builder.Services
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IHasherPassword, BCryptPassword>();
 builder.Services.AddScoped<ITokenGenerator, TokenGenerator>();
@@ -78,8 +90,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowFrontend");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+public abstract partial class Program { }
